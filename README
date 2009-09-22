@@ -1,0 +1,6 @@
+This is a simple way of creating excel like spreadsheets in javascript, using the simplegroupware spreadsheet code with enhanced options like:
+    - Resize the width of columns
+    - Adding a toolbar for styling (Bold, Italic, Underline, Colspan, Insert Column, etc)
+TODO:
+    - Right now, the Js-Spreadsheet uses php for reading data from the server, the plan is to remove this dependency in order to make javascript-only
+    - More options for a better use to come.
