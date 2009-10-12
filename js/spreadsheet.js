@@ -22,11 +22,11 @@
 // Translations implemented by Sophie Lee.
 
 var agent = navigator.userAgent.toLowerCase();
-if (agent.indexOf("konqueror")!=-1) agent = "konqueror";
-  else if (agent.indexOf("safari")!=-1) agent = "safari";
-  else if (agent.indexOf("opera")!=-1) agent = "opera";
-  else if (agent.indexOf("firefox")!=-1) agent = "firefox";
-  else if (agent.indexOf("msie")!=-1) agent = "msie";
+if (agent.indexOf("firefox")!=-1) agent = "firefox";
+else if (agent.indexOf("msie")!=-1) agent = "msie";
+else if (agent.indexOf("opera")!=-1) agent = "opera";
+else if (agent.indexOf("konqueror")!=-1) agent = "konqueror";
+else if (agent.indexOf("safari")!=-1) agent = "safari";
 
 window.onerror=handleErr;
   
@@ -36,8 +36,8 @@ if (agent=="msie" || agent=="safari") { // cursor keys only in keydown
 
 var init_data = "";
 var auto_recalc = true;
-var cols = 13;
-var rows = 30;
+var cols = 20;
+var rows = 100;
 var row0 = 0;
 var col0 = 0;
 var col_min_width = "90px";
@@ -96,11 +96,11 @@ function keypress(event) {
   var ret = true;
   if (active=="position") {
     if (keyCode==13) {
-	  gotoCell(getObj("field").value);
-	  active="content";
-	  ret = false;
-	}
-	return ret;
+      gotoCell(getObj("field").value);
+      active="content";
+      ret = false;
+    }
+    return ret;
   }
   if (active=="dimensions") {
     if (keyCode==13) {
@@ -143,72 +143,72 @@ function keypress(event) {
 	
 	if (!alt && !ctrl && keyCode!=0) {
 	  if (keyCode==33) { // page up
-		if (currRow-10 <= row0 && currRow > 10) {
-		  row0 -= rows;
-		  display();
-	      mouseoverCell(currRow-10,currCol);
-		  scrollDown();
-		} else {
-	      mouseoverCell(currRow>=10?currRow-10:0,currCol);
-		  scrollUp();
-		}
+      if (currRow-10 <= row0 && currRow > 10) {
+        row0 -= rows;
+        display();
+        mouseoverCell(currRow-10,currCol);
+        scrollDown();
+      } else {
+        mouseoverCell(currRow>=10?currRow-10:0,currCol);
+        scrollUp();
+      }
   		ret=false;
 	  } else if (keyCode==34) { // page down
 	    if (currRow+10 >= row0+rows) {
-		  row0 += rows;
-		  display();
-	      mouseoverCell(currRow+10,currCol);
-		  scrollUp();
-		} else {
-	      mouseoverCell(currRow+10,currCol);
-		  scrollDown();
-		}
+        row0 += rows;
+        display();
+        mouseoverCell(currRow+10,currCol);
+        scrollUp();
+      } else {
+        mouseoverCell(currRow+10,currCol);
+        scrollDown();
+      }
   		ret=false;
 	  } else if (keyCode==36) { // home
-		if (currCol!=col0) {
-		  mouseoverCell(currRow,col0);
-		} else if (currCol+1 >= cols) {
-		  col0 -= cols;
-		  display();
-	      mouseoverCell(currRow,currCol-cols);
-		} else if (currRow > row0) {
-		  mouseoverCell(row0,currCol);
-		} else if (currRow+1 > rows) {
-		  row0 -= rows;
-		  display();
-	      mouseoverCell(currRow-rows,currCol);
-		}
-		scrollLeft();
-		ret=false;
+      if (currCol!=col0) {
+        mouseoverCell(currRow,col0);
+      } else if (currCol+1 >= cols) {
+        col0 -= cols;
+        display();
+        mouseoverCell(currRow,currCol-cols);
+      } else if (currRow > row0) {
+        mouseoverCell(row0,currCol);
+      } else if (currRow+1 > rows) {
+        row0 -= rows;
+        display();
+        mouseoverCell(currRow-rows,currCol);
+      }
+      scrollLeft();
+      ret=false;
 	  } else if (keyCode==35) { // end
-	    if (currCol!=(col0+cols-1)) {
-	      mouseoverCell(currRow,col0+cols-1);
-		} else {
-		  col0 += cols;
-		  display();
-	   	  mouseoverCell(currRow,currCol+cols);
-		}
-		scrollRight();
-		ret=false;
+      if (currCol!=(col0+cols-1)) {
+        mouseoverCell(currRow,col0+cols-1);
+      } else {
+        col0 += cols;
+        display();
+        mouseoverCell(currRow,currCol+cols);
+      }
+      scrollRight();
+      ret=false;
 	  } else if (keyCode==39 || keyCode==9) { // right
 	    goRight();
-		ret=false;
-	  } else if (keyCode==40) { // down
-	    goDown();
-		ret=false;
-	  } else if (keyCode==38 && currRow>-2) { // up
-	    goUp();
-		ret=false;
-	  } else if (keyCode==37 && currCol>-1) { // left
-	    goLeft();
-		ret=false;
-	  } else if (!shift && keyCode==46 && isWriteable && confirm(trans("Really empty cell(s) ?"))) {
-	    removeSelectedCell();
-		ret=false;
+      ret=false;
+    } else if (keyCode==40) { // down
+      goDown();
+      ret=false;
+    } else if (keyCode==38 && currRow>-2) { // up
+      goUp();
+      ret=false;
+    } else if (keyCode==37 && currCol>-1) { // left
+      goLeft();
+      ret=false;
+    } else if (!shift && keyCode==46 && isWriteable && confirm(trans("Really empty cell(s) ?"))) {
+      removeSelectedCell();
+      ret=false;
 	  } else if ((keyCode<33 || keyCode>40) && keyCode!=46 && keyCode!=45 &&
 	    keyCode!=16 && keyCode!=17 && keyCode!=18)  {
 	    editCell(currRow,currCol,keyCode);
-		if (keyCode==13) ret=false;
+	    if (keyCode==13) ret=false;
 	  }
 	}
 	if (isShiftDown) {
@@ -231,49 +231,55 @@ function keypress(event) {
 
 function goLeft() {
   if (currCol <= col0 && currCol > 0) {
-	col0 -= cols;
-	display();
-	mouseoverCell(currRow,currCol-1);
-	scrollRight();
+    //col0 -= cols;
+    col0 -= 1;
+    if (col0 < 0) col0 = 0;
+    display();
+    mouseoverCell(currRow,currCol-1);
+    scrollRight();
   } else {
-	mouseoverCell(currRow,currCol-1);
-	scrollLeft();
+    mouseoverCell(currRow,currCol-1);
+    scrollLeft();
   }
 }
 
 function goUp() {
   if (currRow <= row0 && currRow > 0) {
-	row0 -= rows;
-	display();
-	mouseoverCell(currRow-1,currCol);
-	scrollDown();
+    //row0 -= rows;
+    row0 -= 1;
+    if (row0 < 0) row0 = 0;
+    display();
+    mouseoverCell(currRow-1,currCol);
+    scrollDown();
   } else {
-	mouseoverCell(currRow-1,currCol);
-	scrollUp();
+    mouseoverCell(currRow-1,currCol);
+    scrollUp();
   }
 }
 
 function goRight() {
   if (currCol+1 >= col0+cols) {
-	col0 += cols;
-	display();
-	mouseoverCell(currRow,currCol+1);
-	scrollLeft();
+    //col0 += cols;
+    col0 += 1;
+    display();
+    mouseoverCell(currRow,currCol+1);
+    scrollLeft();
   } else {
-	mouseoverCell(currRow,currCol+1);
-	scrollRight();
+    mouseoverCell(currRow,currCol+1);
+    scrollRight();
   }
 }
 
 function goDown() {
   if (currRow+1 >= row0+rows) {
-	row0 += rows;
-	display();
-	mouseoverCell(currRow+1,currCol);
-	scrollUp();
+    //row0 += rows;
+    row0 += 1;
+    display();
+    mouseoverCell(currRow+1,currCol);
+    scrollUp();
   } else {
-	mouseoverCell(currRow+1,currCol);
-	scrollDown();
+    mouseoverCell(currRow+1,currCol);
+    scrollDown();
   }
 }
 
@@ -388,17 +394,58 @@ function display() {
   out += "</td></tr>";
   out += "</table>";
   out += "</div>";
-  out += "<div id='content' "+style+"><table id='columnas' cellspacing='0'>";
+  
+  out += "<div id='tbcols' "+style+"><table id='columnas' cellspacing='0' border='0' style='width:auto;'>";
+    out += "<colgroup>";
+    if (true) {
+      //out += "<col />";
+      for (var i=col0; i<cols+col0; i++) {
+        if (colWidth[i]){
+          out += "<col id='colgroup_col_"+i+"' class='' style='width: "+colWidth[i]+"'/>";
+        }else{
+          out += "<col id='colgroup_col_"+i+"' class='' style='width: 90px' />";
+        }
+      }
+    }
+    out += "</colgroup>";
+    out += "<tr>";
+    for (var i=col0; i<cols+col0; i++) {
+      var colTitle = showCell(-1,i,0);
+      out += "<th class='fixed' id='-1_"+i+"' ondblclick='editCell(-1,"+i+",0);' onclick='mouseoverCell(-1,"+i+");'><div style='"+htmlEscape(formatStyle(getCells(-1,i,1),"_"),false)+"'>"+(colTitle?htmlEscape(colTitle,true)+" - ":"")+buildColName(i)+"</div></th>";
+    }
+    out += "</tr>";
+    
+    out += "<tr id='spacer'>";
+    for (var i=col0; i<cols+col0; i++) out += "<th class='empty'><img src='' style='width:"+col_min_width+"; height:0px;'></th>";
+    out += "</tr>";
+    
+  out += "</table>";
+  out += "</div>";
+  out += "<div id='tbrows' "+style+"><table id='filas' cellspacing='0'>";
+    var lastIndex = -1;
+    var noRowTtitle = false;
+    for (var row=row0; row<rows+row0; row++) {
+      out += "<tr>";
+      var rowTitle = showCell(row,-1,0);
+      out += "<th class='fixed' id='"+row+"_-1' ondblclick='editCell("+row+",-1,0);' onclick='mouseoverCell("+row+",-1);'><div style='"+htmlEscape(formatStyle(getCells(row,-1,1),"_"),false)+"'>"+(rowTitle?htmlEscape(rowTitle,true)+"<br>":"")+(row+1)+"</div></th>";
+      out += "</tr>";
+    }
+    out += "<tr id='spacer'><th class='empty'><img src='' style='width:80px; height:0px;' /></th>";
+    out += "</tr>";
+  out += "</table>";
+  out += "</div>";
+  
+  out += "<div id='content' "+style+"><table id='celdas' cellspacing='0'>";
   out += "<colgroup>";
   if (true) {
-    out += "<col />";
+    //out += "<col />";
     for (var i=col0; i<cols+col0; i++) {
       if (colWidth[i]){
         out += "<col id='colgroup_col_"+i+"' class='' style='width: "+colWidth[i]+"'/>";
       }else{
-        out += "<col id='colgroup_col_"+i+"' class='' style='' />";
+        out += "<col id='colgroup_col_"+i+"' class='' style='width: 90px' />";
       }
-	}
+    }
   }
   out += "</colgroup>";
   /*
@@ -429,52 +476,54 @@ function display() {
     out += "<th id='-1_"+i+"' ondblclick='editCell(-1,"+i+",0);' onclick='mouseoverCell(-1,"+i+");'><div style='"+htmlEscape(formatStyle(getCells(-1,i,1),"_"),false)+"'>"+(colTitle?htmlEscape(colTitle,true)+" - ":"")+buildColName(i)+"</div></th>";
   }
   out += "</tr>";
-  */
-  out += "<tr><th id='-1_-1' ondblclick='editCell(-1,-1,0);' onclick='mouseoverCell(-1,-1);'>"+htmlEscape(showCell(-1,-1,0),true)+"</th>";
+  out += "<tr>";
   for (var i=col0; i<cols+col0; i++) {
-	var colTitle = showCell(-1,i,0);
+    var colTitle = showCell(-1,i,0);
     out += "<th id='-1_"+i+"' ondblclick='editCell(-1,"+i+",0);' onclick='mouseoverCell(-1,"+i+");'><div style='"+htmlEscape(formatStyle(getCells(-1,i,1),"_"),false)+"'>"+(colTitle?htmlEscape(colTitle,true)+" - ":"")+buildColName(i)+"</div></th>";
   }
   out += "</tr>";
+  */
   //fin de edicion
   var lastIndex = -1;
   var noRowTtitle = false;
   for (var row=row0; row<rows+row0; row++) {
     out += "<tr>";
-	var rowTitle = showCell(row,-1,0);
-	out += "<th id='"+row+"_-1' ondblclick='editCell("+row+",-1,0);' onclick='mouseoverCell("+row+",-1);'><div style='"+htmlEscape(formatStyle(getCells(row,-1,1),"_"),false)+"'>"+(rowTitle?htmlEscape(rowTitle,true)+"<br>":"")+(row+1)+"</div></th>";
+    //var rowTitle = showCell(row,-1,0);
+    //out += "<th id='"+row+"_-1' ondblclick='editCell("+row+",-1,0);' onclick='mouseoverCell("+row+",-1);'><div style='"+htmlEscape(formatStyle(getCells(row,-1,1),"_"),false)+"'>"+(rowTitle?htmlEscape(rowTitle,true)+"<br>":"")+(row+1)+"</div></th>";
     for (var col=col0; col<cols+col0; col++) {
-	  if (view=="values") {
-	    if (!marks[row] || !marks[row][col]) {
-	      var style = getCells(row,col,1);
-		  var value = showCell(row,col,0);
-		  var colSpan = getCellStyle(row,col,"colspan");
-		  if (colSpan) {
-		    if (!marks[row]) marks[row] = new Array();
-		    for (var s=col+1; s<col+colSpan; s++) marks[row][s] = new Array(row,col);
-	  	  }
-		  var rowSpan = getCellStyle(row,col,"rowspan");
-		  if (rowSpan) {
-		    for (var s=row+1; s<row+rowSpan; s++) {
-		      if (!marks[s]) marks[s] = new Array();
-		      marks[s][col] = new Array(row,col);
-		    }
-	  	  }
-		  value = formatValue(value,style);
-		  style = htmlEscape(formatStyle(style,value),false);
+      if (view=="values") {
+        if (!marks[row] || !marks[row][col]) {
+          var style = getCells(row,col,1);
+          var value = showCell(row,col,0);
+          var colSpan = getCellStyle(row,col,"colspan");
+          if (colSpan) {
+            if (!marks[row]) marks[row] = new Array();
+            for (var s=col+1; s<col+colSpan; s++) marks[row][s] = new Array(row,col);
+          }
+          var rowSpan = getCellStyle(row,col,"rowspan");
+          if (rowSpan) {
+            for (var s=row+1; s<row+rowSpan; s++) {
+              if (!marks[s]) marks[s] = new Array();
+              marks[s][col] = new Array(row,col);
+            }
+          }
+          value = formatValue(value,style);
+          style = htmlEscape(formatStyle(style,value),false);
           out += "<td "+(rowSpan?"rowspan='"+rowSpan+"'":"")+" "+(colSpan?"colspan='"+colSpan+"'":"")+" id='"+row+"_"+col+"' onmousedown='mousedown("+row+","+col+");' onmouseup='mouseup();' onmouseover='buildStatus("+row+","+col+");' onclick='mouseoverCell("+row+","+col+");' onclick='mouseoverCell("+row+","+col+");' ondblclick='editCell("+row+","+col+",0);'><div style='"+style+"'>"+htmlEscape(value,true)+"</div></td>";
-		}
-	  } else if (view=="formulas") {
-        out += "<td id='"+row+"_"+col+"' onmouseover='buildStatus("+row+","+col+");' onclick='mouseoverCell("+row+","+col+");' onclick='mouseoverCell("+row+","+col+");' ondblclick='editCell("+row+","+col+",0);'>"+htmlEscape(getCells(row,col,0),true)+"</td>";
-	  } else {
-        out += "<td id='"+row+"_"+col+"' onmouseover='buildStatus("+row+","+col+");' onclick='mouseoverCell("+row+","+col+");' onclick='mouseoverCell("+row+","+col+");' ondblclick='editCell("+row+","+col+",0);'>"+htmlEscape(getCells(row,col,1),true)+"</td>";
-	  }
+        }
+      } else if (view=="formulas") {
+          out += "<td id='"+row+"_"+col+"' onmouseover='buildStatus("+row+","+col+");' onclick='mouseoverCell("+row+","+col+");' onclick='mouseoverCell("+row+","+col+");' ondblclick='editCell("+row+","+col+",0);'>"+htmlEscape(getCells(row,col,0),true)+"</td>";
+      } else {
+          out += "<td id='"+row+"_"+col+"' onmouseover='buildStatus("+row+","+col+");' onclick='mouseoverCell("+row+","+col+");' onclick='mouseoverCell("+row+","+col+");' ondblclick='editCell("+row+","+col+",0);'>"+htmlEscape(getCells(row,col,1),true)+"</td>";
+      }
     }
     out += "</tr>";
   }
-  out += "<tr id='spacer'><th class='empty'></th>";
+  
+  out += "<tr id='spacer'>";
   for (var i=col0; i<cols+col0; i++) out += "<th class='empty'><img src='' style='width:"+col_min_width+"; height:0px;'></th>";
   out += "</tr>";
+  
   out += "</table></div>";
   out += "<div class='footer' id='footer' onmouseover='getObj(\"status\").innerHTML=\"\";'>&nbsp;";
   if (isWriteable) {
@@ -509,12 +558,19 @@ function display() {
       $("#columnas").kiketable_colsizable();
       $("#columnas").eq(0)
           .kiketable_colsizable({
-              dragMove : true, 
-              dragCells : "tr:first>*:not(:first)",
+              dragMove : false, 
+              dragCells : "tr:first",
               dragOpacity : .2,
+              dragProxy : 'line',
               onEndResize : fnSaveColWidth
               })
-          .end()
+          .end();
+      $("#content").scroll(function(){
+          $("#tbrows").scrollTop($("#content").scrollTop());
+      });
+      $("#content").scroll(function(){
+          $("#tbcols").scrollLeft($("#content").scrollLeft());
+      });
   //});
   
   //////////////////////////////////////////////////////////////////////////////////////
@@ -558,14 +614,14 @@ function previewValue() {
   if (!getObj("value").disabled && 
 	 (value.length>25 || value.indexOf("\\n")!=-1 || value.indexOf("html:")==0)) {
     getObj("multiline").style.display = "inline";
-	//getObj("content").style.overflow = "hidden"; // needed for invisible cursor
+    //getObj("content").style.overflow = "hidden"; // needed for invisible cursor
     if (value.indexOf("html:")==0 && getObj("multiline").src.indexOf("tinymce/index.html")==-1) {
-	  getObj("multiline").src = "tinymce/index.html";
-	} else if (value.indexOf("html:")!=0 && getObj("multiline").src.indexOf("editor.htm")==-1) {
-	  getObj("multiline").src = "editor.htm";
-	} else if (getObj("multiline").contentWindow.update) {
-	  getObj("multiline").contentWindow.update();
-	}
+      getObj("multiline").src = "tinymce/index.html";
+    } else if (value.indexOf("html:")!=0 && getObj("multiline").src.indexOf("editor.htm")==-1) {
+      getObj("multiline").src = "editor.htm";
+    } else if (getObj("multiline").contentWindow.update) {
+      getObj("multiline").contentWindow.update();
+    }
   }
   previewField();
 }
@@ -1198,11 +1254,11 @@ function highlightRange(multiRange,classname,att) {
   if (multiRange.length==0) return false;
   var cRange = getMultiRange(multiRange);
   for (var row=cRange[0]; row<=cRange[2]; row++) {
-	for (var col=cRange[1]; col<=cRange[3]; col++) {
-	  obj = resolveCell(row,col);
-	  if (obj && classname) obj.className = classname;
-	    else if (!classname && obj) obj.style.backgroundColor = att;
-	}
+    for (var col=cRange[1]; col<=cRange[3]; col++) {
+      obj = resolveCell(row,col);
+      if (obj && classname) obj.className = classname;
+      else if (!classname && obj) obj.style.backgroundColor = att;
+    }
   }
 }
 function getMultiRange(multiRange) {
@@ -1215,26 +1271,30 @@ function getMultiRange(multiRange) {
 }
 function mousedown(row,col) {
   if (getObj("styling").disabled) {
-	document.onmousedown=new Function("return false;");
-	document.onselectstart=new Function("return false;");
-	isMouseDown=1;
-	highlightRange(multiRange,"cell");
+    document.onmousedown=new Function("return false;");
+    document.onselectstart=new Function("return false;");
+    isMouseDown=1;
+    highlightRange(multiRange,"cell");
     multiRange = new Array(row,col,row,col);
-	highlightRange(multiRange,"cell_highlight_over");
+    highlightRange(multiRange,"cell_highlight_over");
+    
   }
 }
 function mouseup() {
   if (getObj("styling").disabled) {
-	document.onmousedown="";
+    document.onmousedown="";
     document.onselectstart="";
-	isMouseDown=0;
+    isMouseDown=0;
   }
+  setborderCell(currRow,currCol);
 }
 function markCell(row,col) {
   highlightCell(row,col,"cell_highlight_over");
   highlightCellHeader(row,col);
+  setborderCell(row,col);
   currRow = row;
   currCol = col;
+  //pone borde a la celda actual
   getObj("value").value = getCellsR(row,col,0);
   getObj("styling").value = getCellsR(row,col,1);
   getObj("field").value = buildColName(col)+(row+1);
@@ -1242,45 +1302,64 @@ function markCell(row,col) {
 function mouseoverCell(row,col) {
   if (getObj("styling").disabled) {
     if (row==currRow && col==currCol && getObj("field").value) {
-	  editCell(row,col,0);
-	} else {
-	  markCell(row,col);
-	  buildStatus(row,col);
-	}
+      editCell(row,col,0);
+    } else {
+      markCell(row,col);
+      buildStatus(row,col);
+    }
   } else if (!getObj("value").disabled) {
     var obj = getObj("value");
-	var ins = buildColName(col)+(row+1);
-	if (obj.selectionStart) {
-	  var tmp = obj.selectionStart;
-	  obj.value = obj.value.substring(0,obj.selectionStart)+ins+obj.value.substring(obj.selectionStart);
-	  obj.selectionStart = tmp+ins.length;
-	  obj.selectionEnd = tmp+ins.length;
-      obj.focus();
-	} else if (document.selection) {
-	  obj.value += ins;
-	}
-	previewValue();
+    var ins = buildColName(col)+(row+1);
+    if (obj.selectionStart) {
+      var tmp = obj.selectionStart;
+      obj.value = obj.value.substring(0,obj.selectionStart)+ins+obj.value.substring(obj.selectionStart);
+      obj.selectionStart = tmp+ins.length;
+      obj.selectionEnd = tmp+ins.length;
+        obj.focus();
+    } else if (document.selection) {
+      obj.value += ins;
+    }
+    previewValue();
   }
 }
 function highlightCell(row,col,className) {
   var obj = resolveCell(currRow,currCol);
-  if (obj) obj.className = "cell";
+  if (obj){
+    //obj.className = "cell";
+    $("#"+currRow+"_"+currCol).addClass(className);
+    $("#"+currRow+"_"+currCol).removeClass("cell_highlight_over");
+  }
   obj = resolveCell(row,col);
-  if (obj) obj.className = className;
+  if (obj)
+    //obj.className = className;
+    $("#"+row+"_"+col).addClass(className);
 }
 function highlightCellHeader(row,col) {
   var obj = resolveCell(-1,currCol);
-  if (obj) obj.className = "border";
+  if (obj) //obj.className = "border";
+    //$("#-1_"+currCol).addClass("border");
+    $("#-1_"+currCol).removeClass("border_highlight");
   obj = resolveCell(currRow,-1);
-  if (obj) obj.className = "border";
+  if (obj){ //obj.className = "border";
+    $("#"+currRow+"_-1").removeClass("border_highlight");
+  }
   var sRow = -1;
   if (row<-1) sRow = -2;
   obj = resolveCell(sRow,col);
-  if (obj) obj.className = "border_highlight";
+  if (obj){ //obj.className = "border_highlight";
+    $("#"+sRow+"_"+col).addClass("border_highlight");
+  }
   if (row>=-1) {	
     obj = resolveCell(row,-1);
-    if (obj) obj.className = "border_highlight";
+    if (obj){ //obj.className = "border_highlight";
+      $("#"+row+"_-1").addClass("border_highlight");
+    }
   }
+}
+function setborderCell(row,col){
+  if ($("#"+currRow+"_"+currCol).hasClass("border_cell"))
+    $("#"+currRow+"_"+currCol).removeClass("border_cell");
+  $("#"+row+"_"+col).addClass("border_cell");
 }
 function showCell(row,col,calls) {
   if (typeof calls == "undefined") calls = 0;
@@ -1884,12 +1963,13 @@ function setFormatCell(row,col,format_cell) {
   if (row == -1 || col == -1) highlightCellHeader(row,col);
   //previewValue();
 }
-//para el rowspan
+//para el colspan
 function colspan(){
   var min_col = 9999;
   var max_col = 0;
   var cant_cols = 1;
-  var colspan_al = false;
+  var colspan_al = false;//por si se selecciona una celda con colspan
+  var colspan_column = false;
   var cant_cells = $(".cell_highlight_over").length;
   $(".cell_highlight_over").each(function(index,elem){
       //busca la menor celda
@@ -1903,56 +1983,59 @@ function colspan(){
       
       if (cells[currRow] && cells[currRow][matrix[1]] && cells[currRow][matrix[1]][1]){
         if (cells[currRow][matrix[1]][1].indexOf("colspan") > -1){
+          colspan_column = true;
           if (cant_cells > 1)
             colspan_al = true;
         }
       }
   });
-  if (colspan_al){
-    
-  }else{
+  if (!colspan_al){
     cant_cols = max_col - min_col + 1;
-    //colspan de la primera columna (max_col - min_col + 1) columnas
-    var value = cells[currRow][min_col][0];
-    
-    var pos_bold = -1;
-    style = cells[currRow][min_col][1];
-    
-    var arrstyle = style.split(";");
-    for (var i=0; i<arrstyle.length; i++){
-      if (arrstyle[i].replace(" ","").split(":")[0] == "colspan"){
-        pos_bold = i;
-        break;
+    //no hace el colspan si solo es una columna
+    //pero si lo hace en caso de que se quiera deshacer el colspan
+    if (cant_cols>1 || colspan_column){
+      //colspan de la primera columna (max_col - min_col + 1) columnas
+      var value = cells[currRow][min_col][0];
+      
+      var pos_bold = -1;
+      style = cells[currRow][min_col][1];
+      
+      var arrstyle = style.split(";");
+      for (var i=0; i<arrstyle.length; i++){
+        if (arrstyle[i].replace(" ","").split(":")[0] == "colspan"){
+          pos_bold = i;
+          break;
+        }
       }
-    }
-    if (pos_bold > -1){
-      style="";
-      for (var i=0;i<arrstyle.length;i++){
-        if (pos_bold != i && arrstyle[i].replace(" ","")!="")
-          style += arrstyle[i] + ";";
+      if (pos_bold > -1){
+        style="";
+        for (var i=0;i<arrstyle.length;i++){
+          if (pos_bold != i && arrstyle[i].replace(" ","")!="")
+            style += arrstyle[i] + ";";
+        }
+      }else{
+        style += "colspan:"+cant_cols+";";
       }
-    }else{
-      style += "colspan:"+cant_cols+";";
+      cells[currRow][min_col][1] = style;
+      
+      
+      var obj2 = resolveCell(currRow,min_col);
+      value = previewCell(value,0);
+      value = formatValue(value,cells[currRow][min_col][1]);
+      var style = htmlEscape(formatStyle(cells[currRow][min_col][1],value),false);
+      if (currRow == -1) {
+        if (value!="") value += " - ";
+        value += buildColName(min_col);
+      } else if (min_col == -1) {
+        if (value!="") value += "\\n";
+        value += currRow+1;
+      }
+      value = htmlEscape(value,true);
+      var val = "<div "+(style?"style='"+style+"'":"")+">"+value+"</div>";
+      obj2.innerHTML = val;
+      if (val.indexOf("<img")!=-1) obj2.style.height = obj2.offsetHeight+"px";
+      if (currRow == -1 || min_col == -1) highlightCellHeader(currRow,min_col);
+      display();
     }
-    cells[currRow][min_col][1] = style;
-    
-    
-    var obj2 = resolveCell(currRow,min_col);
-    value = previewCell(value,0);
-    value = formatValue(value,cells[currRow][min_col][1]);
-    var style = htmlEscape(formatStyle(cells[currRow][min_col][1],value),false);
-    if (currRow == -1) {
-      if (value!="") value += " - ";
-      value += buildColName(min_col);
-    } else if (min_col == -1) {
-      if (value!="") value += "\\n";
-      value += currRow+1;
-    }
-    value = htmlEscape(value,true);
-    var val = "<div "+(style?"style='"+style+"'":"")+">"+value+"</div>";
-    obj2.innerHTML = val;
-    if (val.indexOf("<img")!=-1) obj2.style.height = obj2.offsetHeight+"px";
-    if (currRow == -1 || min_col == -1) highlightCellHeader(currRow,min_col);
-    display();
   }
 }

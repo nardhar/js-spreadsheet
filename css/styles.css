@@ -27,13 +27,32 @@ input {
 
 #content {
   position:absolute;
-  top:55px;
-  left:0px;
+  top:70px;
+  left:80px;
   right:0px;
-  bottom:18px;
-  width:100%;
+  bottom:19px;
+  /*width:100%;*/
   overflow:auto;
 }
+
+#tbcols {
+  position:absolute;
+  top:52px;
+  left:80px;
+  height:17px;
+  right:15px;
+  border-bottom:1px solid;
+  overflow:hidden;
+}
+#tbrows {
+  position:absolute;
+  top:70px;
+  left:0px;
+  bottom:34px;
+  /*width:100%;*/
+  overflow:hidden;
+}
+
 #multiline {
   display:none;
   position:absolute;
@@ -57,8 +76,13 @@ th {
   background-color:#EFEFEF;
   border-right:1px solid #666666;
   border-bottom:1px solid #666666;
-  padding-left:5px;
-  padding-right:5px;
+}
+th.fixed {
+  color:#666666;
+  /*background-color:#EFEFEF;*/
+  border-right:1px solid #666666;
+  border-bottom:1px solid #666666;
+  height: 18px;
 }
 th div {
   padding:1px;
@@ -127,11 +151,14 @@ td {
   margin:0px;
   border:0px;
 }
+.current_cell {
+   
+}
 .cell_highlight {
   background-color:#FFFFC0;
 }
 .cell_highlight_over {
-  background-color:#D6E0F5;
+  background-color:#E1EAF6;
 }
 .border_highlight {
   background-color:#C0FFC0;
@@ -152,6 +179,12 @@ td {
   height:0px;
   position:absolute;
   top:-30px;
+}
+
+.border_cell {
+  //border-style:solid solid solid solid;
+  //border-width:0.2px;
+  //border-color:#616AF6
 }
 
 /*  ICONS  */

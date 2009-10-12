@@ -44,7 +44,7 @@
 								this.$td =	$(this.td);
 								this.col = _Cols[this.td.cellIndex];
 							})
-							.dblclick( function() { 
+							.dblclick( function() {
 								// if loading fast, only once...
 								if (this.wtd == null){		
 										this.wtd =		this.col.offsetWidth; 
@@ -92,7 +92,7 @@
 							//
 							// bind a drag event, update proxy position 
 							//
-							.bind( 'drag', (o.dragMove || o.dragProxy)? function(e){ 
+							.bind( 'drag', (o.dragMove || o.dragProxy)? function(e){
 									var w = e.offsetX + this.d1;
 									if(w - this.d2 - this.d1 >= 0){
 										e.dragProxy.style.width = w + "px"; //$(e.dragProxy).css({width: w}) ;
@@ -107,7 +107,7 @@
 									var x = e.offsetX;
 									if (x - this.d2 >= 0)
 										e.dragProxy.style.left = x+"px"; //$(e.dragProxy).css({left: e.offsetX}); 
-							}) 
+							})
 							//
 							// bind a dragend event, remove proxy
 							//
@@ -152,10 +152,22 @@
 		onLoad : function(){},
 		//evento cuando termina de cambiar el ancho
 		onEndResize : function(){
-          for (var i=col0; i<cols+col0; i++) {
-            colWidth[i]=document.getElementById("colgroup_col_"+i).style.width;
-          }
-          //alert("evento llamado");
+      for (var i=col0; i<cols+col0; i++) {
+        colWidth[i]=document.getElementById("colgroup_col_"+i).style.width;
+      }
+      for (i=0;i<$("#celdas > colgroup > col").length;i++){
+		     $($("#celdas > colgroup > col")[i]).css('width',$($("#columnas > colgroup > col")[i]).width());
+		  }
+		  //console.log($("#columnas").width());
+		  $("#celdas").css('width',$("#columnas").width());
+		  //console.log($("#celdas").width());
+		  
+		  if ($("#celdas").width()>$("#content").width()){
+		    $("#filas").css('bottom',18);
+		  }else{
+		    $("#filas").css('bottom',31);
+		  }
+		  
 		}
 	};
 }) (jQuery);

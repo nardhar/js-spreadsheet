@@ -34,9 +34,9 @@ if (strpos("@".$url,"http://")==1 or strpos("@".$url,"https://")==1 or dirname($
   $init_data = @file_get_contents($url);
   if (!$init_data) $init_data = "\n\nCannot load ".$url;
 }
-
+//$init_data = @file_get_contents("datos.js");
 //PARA QUE NO CARGUE UN ARCHIVO
-$init_data = "";
+$init_data = '';
 
 header("Content-Type: text/html; charset=utf-8");
 
@@ -48,8 +48,8 @@ header("Content-Type: text/html; charset=utf-8");
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<style>
       .kiketable-colsizable{
-          table-layout: fixed; 
-          width : 100%;
+          /*table-layout: fixed;*/ 
+          //width : 100%;
           }
       .kiketable-colsizable td,
       .kiketable-colsizable th{
@@ -58,7 +58,7 @@ header("Content-Type: text/html; charset=utf-8");
       .kiketable-th{
           /* Don't set "position: relative" in IE */
           white-space: nowrap;   /* Only works for THs in IE */
-          text-align: left;
+          text-align: center;
           height: 20px;          /* value safe to change */
           }
       .kiketable-th-text{
@@ -69,11 +69,11 @@ header("Content-Type: text/html; charset=utf-8");
           float: right;
           cursor: e-resize;
           height: 100%;
-          border-left:2px outset white;
+          //border-left:2px outset white;
           border-right:2px inset white;
           }
       html > body .kiketable-colsizable-handler{
-          border-right:1px outset white;
+          //border-right:2px outset white;
           }
       .kiketable-colsizable-dragLine{
           position: absolute;
@@ -130,6 +130,7 @@ out += '</tr></table>';
 document.write(out);
 
 <?php
+/*
 if (!empty($_REQUEST["mode"]) and $_REQUEST["mode"]=="viewer") {
   echo '
     isWriteable = false;
@@ -146,23 +147,11 @@ if (!empty($_REQUEST["mode"]) and $_REQUEST["mode"]=="viewer") {
     getObj("code").value = top.getObj("'.$_REQUEST["data"].'").value;
     load(getObj("code").value);
   ';
-} else {
+} else {*/
   echo 'load(getObj("code").value);';
-}
+//}
+
 ?>
-    /*
-	$(function() {
-		$("table_colsizeable").kiketable_colsizable();
-		$("table_colsizeable").eq(1)
-			.kiketable_colsizable({
-				dragMove : true, 
-				dragCells : "tr:first>*:not(:first)",
-				dragOpacity: .2
-				})
-			.end()
-			
-	});
-	*/
 </script>
 </div>
 </body>
